@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="he">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>משימות סטודיו</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f4f4f4;
+            padding: 20px;
+        }
+        .container {
+            max-width: 400px;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.1);
+        }
+        .task {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+        .task input {
+            cursor: pointer;
+        }
+        button {
+            margin-top: 10px;
+            padding: 10px;
+            background: #28a745;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>משימות סטודיו</h2>
+        <label for="worker">בחר/י שם:</label>
+        <select id="worker">
+            <option>עלמה</option>
+            <option>נועה</option>
+            <option>שירה</option>
+        </select>
+        <div id="taskList">
+            <div class="task"><span>פתיחת הסטודיו</span><input type="checkbox"></div>
+            <div class="task"><span>בדיקת רמקולים ותאורה</span><input type="checkbox"></div>
+            <div class="task"><span>ניקיון אחרי שיעור</span><input type="checkbox"></div>
+            <div class="task"><span>סידור קבלה וספירת מזומן</span><input type="checkbox"></div>
+            <div class="task"><span>כיבוי אורות ונעילת דלתות</span><input type="checkbox"></div>
+        </div>
+        <button onclick="saveTasks()">שמור</button>
+    </div>
+
+    <script>
+        function saveTasks() {
+            let worker = document.getElementById("worker").value;
+            let tasks = document.querySelectorAll(".task input");
+            let completedTasks = [];
+            tasks.forEach((task, index) => {
+                if (task.checked) {
+                    completedTasks.push(document.querySelectorAll(".task span")[index].textContent);
+                }
+            });
+            alert(worker + " ביצע/ה: " + completedTasks.join(", "));
+        }
+    </script>
+</body>
+</html>
