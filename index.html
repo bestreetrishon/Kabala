@@ -37,38 +37,90 @@
             cursor: pointer;
             border-radius: 5px;
         }
+        #status {
+            margin-top: 15px;
+            font-size: 14px;
+            color: #333;
+        }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h2>משימות סטודיו</h2>
+    <div class="container" id="step1">
+        <h2>מי עובדת היום?</h2>
         <label for="worker">בחר/י שם:</label>
         <select id="worker">
+            <option>ליאור</option>
             <option>עלמה</option>
-            <option>נועה</option>
-            <option>שירה</option>
+            <option>ולריה</option>
+            <option>עמית</option>
         </select>
-        <div id="taskList">
-            <div class="task"><span>פתיחת הסטודיו</span><input type="checkbox"></div>
-            <div class="task"><span>בדיקת רמקולים ותאורה</span><input type="checkbox"></div>
-            <div class="task"><span>ניקיון אחרי שיעור</span><input type="checkbox"></div>
-            <div class="task"><span>סידור קבלה וספירת מזומן</span><input type="checkbox"></div>
-            <div class="task"><span>כיבוי אורות ונעילת דלתות</span><input type="checkbox"></div>
+        <button onclick="nextStep(2)">הבא</button>
+    </div>
+
+    <div class="container" id="step2" style="display: none;">
+        <h2>משימות פתיחה</h2>
+        <div class="task-list">
+            <div class="task"><span>לטאטא / לשאוב לובי</span><input type="checkbox"></div>
+            <div class="task"><span>לטאטא / לשאוב שירותים</span><input type="checkbox"></div>
+            <div class="task"><span>לטאטא / לשאוב חדרי הלבשה</span><input type="checkbox"></div>
+            <div class="task"><span>מופ בסטודיו</span><input type="checkbox"></div>
+            <div class="task"><span>לנקות מופ</span><input type="checkbox"></div>
+            <div class="task"><span>למלא צץ רץ ידיים</span><input type="checkbox"></div>
+            <div class="task"><span>למלא צץ רץ שירותים</span><input type="checkbox"></div>
+            <div class="task"><span>לנקות אסלה</span><input type="checkbox"></div>
         </div>
-        <button onclick="saveTasks()">שמור</button>
+        <button onclick="nextStep(3)">הבא</button>
+    </div>
+
+    <div class="container" id="step3" style="display: none;">
+        <h2>משימות בעבודה השוטפת</h2>
+        <div class="task-list">
+            <div class="task"><span>לעבור על פולאואפ</span><input type="checkbox"></div>
+            <div class="task"><span>3-4 הודעות D</span><input type="checkbox"></div>
+            <div class="task"><span>לענות על מיילים</span><input type="checkbox"></div>
+            <div class="task"><span>לענות על וואטסאפ</span><input type="checkbox"></div>
+            <div class="task"><span>לענות על DM באינסטגרם</span><input type="checkbox"></div>
+        </div>
+        <button onclick="nextStep(4)">סיימתי מה עוד?</button>
+    </div>
+
+    <div class="container" id="step4" style="display: none;">
+        <h2>משימות לסגירה</h2>
+        <div class="task-list">
+            <div class="task"><span>לרוקן פחים</span><input type="checkbox"></div>
+            <div class="task"><span>לסדר עמדת קבלה</span><input type="checkbox"></div>
+            <div class="task"><span>לסגור אחרינו דלת</span><input type="checkbox"></div>
+            <div class="task"><span>לוודא שהעברנו משימות למשמרת הבאה לפי הצורך</span><input type="checkbox"></div>
+        </div>
+        <button onclick="submitToGoogleSheets()">תודה ולילה טוב</button>
     </div>
 
     <script>
-        function saveTasks() {
+        function nextStep(step) {
+            document.getElementById("step" + (step - 1)).style.display = "none";
+            document.getElementById("step" + step).style.display = "block";
+        }
+
+        function submitToGoogleSheets() {
             let worker = document.getElementById("worker").value;
-            let tasks = document.querySelectorAll(".task input");
             let completedTasks = [];
-            tasks.forEach((task, index) => {
-                if (task.checked) {
-                    completedTasks.push(document.querySelectorAll(".task span")[index].textContent);
-                }
+            document.querySelectorAll(".task-list .task input:checked").forEach(task => {
+                completedTasks.push(task.parentElement.querySelector("span").textContent);
             });
-            alert(worker + " ביצע/ה: " + completedTasks.join(", "));
+            
+            let formData = new FormData();
+            formData.append("worker", worker);
+            formData.append("tasks", completedTasks.join(", "));
+            
+            fetch("YOUR_GOOGLE_SHEETS_WEB_APP_URL", {
+                method: "POST",
+                body: formData
+            }).then(response => response.text()).then(data => {
+                alert("הנתונים נשמרו! תודה ולילה טוב!");
+                location.reload();
+            }).catch(error => {
+                alert("שגיאה בשמירה, נסה שוב.");
+            });
         }
     </script>
 </body>
