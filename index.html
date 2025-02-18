@@ -126,24 +126,22 @@
         completedTasks.push(task.parentElement.querySelector("span").textContent);
     });
 
-    let url = `https://script.google.com/macros/s/AKfycbxU7tfKV8LJo-P7PlF6yyCOaEMlBggWZ4yxx-Mgvb4JWFUUsNzYQvd4cAf-iwldw8q3/exec?worker=${encodeURIComponent(worker)}&tasks=${encodeURIComponent(completedTasks.join(","))}`;
+    let formId = "1f6A1GbhMmhx5xJSdC6nNJB3rk4aZWAagH7XHC9JimCQ"; 
+    let url = `https://docs.google.com/forms/d/e/${formId}/formResponse?entry.123456789=${encodeURIComponent(worker)}&entry.987654321=${encodeURIComponent(completedTasks.join(", "))}`;
 
     fetch(url, {
         method: "GET",
+        mode: "no-cors"
     })
-    .then(response => response.json())
-    .then(data => {
-        if (data.status === "Success") {
-            alert("הנתונים נשמרו! תודה ולילה טוב!");
-            location.reload();
-        } else {
-            alert("שגיאה בשמירה: " + data.message);
-        }
+    .then(() => {
+        alert("הנתונים נשמרו בהצלחה! תודה ולילה טוב!");
+        location.reload();
     })
     .catch(error => {
         alert("שגיאה בשמירה, נסה שוב.");
     });
 }
+
 
     </script>
 </body>
