@@ -18,6 +18,7 @@
             padding: 20px;
             border-radius: 10px;
             box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.1);
+            display: none;
         }
         .task {
             display: flex;
@@ -43,7 +44,7 @@
         }
     </style>
 </head>
-<body onload="updateDateTime()">
+<body onload="updateDateTime(); showStep(1)">
     <div id="datetime"></div>
     
     <div class="container" id="step1">
@@ -55,10 +56,10 @@
             <option>ולריה</option>
             <option>עמית</option>
         </select>
-        <button onclick="nextStep(2)">הבא</button>
+        <button onclick="showStep(2)">הבא</button>
     </div>
 
-    <div class="container" id="step2" style="display: none;">
+    <div class="container" id="step2">
         <h2>משימות פתיחה</h2>
         <div class="task-list">
             <div class="task"><span>לטאטא / לשאוב לובי</span><input type="checkbox"></div>
@@ -77,10 +78,10 @@
             <div class="task"><span>לוודא שהפלאפון של הסטודיו בטעינה</span><input type="checkbox"></div>
             <div class="task"><span>לעדכן לוח שחור לפי האפליקציה</span><input type="checkbox"></div>
         </div>
-        <button onclick="nextStep(3)">הבא</button>
+        <button onclick="showStep(3)">הבא</button>
     </div>
 
-    <div class="container" id="step3" style="display: none;">
+    <div class="container" id="step3">
         <h2>משימות בעבודה השוטפת</h2>
         <div class="task-list">
             <div class="task"><span>לבדוק אם יש משהו דחוף במייל</span><input type="checkbox"></div>
@@ -90,10 +91,10 @@
             <div class="task"><span>3-4 הודעות D</span><input type="checkbox"></div>
             <div class="task"><span>5 פולאואפים</span><input type="checkbox"></div>
         </div>
-        <button onclick="nextStep(4)">סיימתי מה עוד?</button>
+        <button onclick="showStep(4)">סיימתי מה עוד?</button>
     </div>
 
-    <div class="container" id="step4" style="display: none;">
+    <div class="container" id="step4">
         <h2>משימות לסגירה</h2>
         <div class="task-list">
             <div class="task"><span>להרים לכלוך מלובי / חדר הלבשה / שירותים</span><input type="checkbox"></div>
@@ -109,6 +110,13 @@
         function updateDateTime() {
             let now = new Date();
             document.getElementById("datetime").textContent = now.toLocaleString("he-IL");
+        }
+
+        function showStep(step) {
+            document.querySelectorAll(".container").forEach(container => {
+                container.style.display = "none";
+            });
+            document.getElementById("step" + step).style.display = "block";
         }
 
         function submitToGoogleSheets() {
