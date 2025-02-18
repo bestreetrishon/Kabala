@@ -98,51 +98,15 @@
         <button onclick="showStep(4)">סיימתי מה עוד?</button>
     </div>
 
-    <script>
-        function updateDateTime() {
-            let now = new Date().toLocaleString("he-IL");
-            document.getElementById("datetime").textContent = now;
-        }
-
-        function showStep(step) {
-            document.querySelectorAll(".container").forEach(container => {
-                container.style.display = "none";
-            });
-            let nextStep = document.getElementById("step" + step);
-            if (nextStep) {
-                nextStep.style.display = "block";
-            }
-        }
-
-        function submitToGoogleForms() {
-            let worker = document.getElementById("worker").value;
-            let date = new Date().toLocaleString("he-IL");
-            let formId = "1FAIpQLSc8sckpEf_gleOsxIWOCJ4ErejOoOKe4u0a4-ENQDTiGvNc5g";
-            let entryWorker = "863306976";
-            let entryDate = "402146247";
-            
-            let entries = {};
-            document.querySelectorAll(".task-list .task input").forEach(task => {
-                let taskId = task.getAttribute("data-entry");
-                entries[taskId] = task.checked ? "✅" : "❌";
-            });
-            
-            let url = `https://docs.google.com/forms/d/e/${formId}/formResponse?entry.${entryWorker}=${encodeURIComponent(worker)}&entry.${entryDate}=${encodeURIComponent(date)}`;
-            
-            Object.keys(entries).forEach(entryId => {
-                url += `&entry.${entryId}=${encodeURIComponent(entries[entryId])}`;
-            });
-            
-            fetch(url, {
-                method: "GET",
-                mode: "no-cors"
-            }).then(() => {
-                alert("הנתונים נשמרו בהצלחה! תודה ולילה טוב!");
-                location.reload();
-            }).catch(error => {
-                alert("שגיאה בשמירה, נסה שוב.");
-            });
-        }
-    </script>
+    <div class="container" id="step4">
+        <h2>משימות לסגירה</h2>
+        <div class="task-list">
+            <div class="task"><span>לרוקן פחים</span><input type="checkbox" data-entry="1516200529"></div>
+            <div class="task"><span>לסדר עמדת קבלה</span><input type="checkbox" data-entry="554196869"></div>
+            <div class="task"><span>לסגור אחרינו דלת</span><input type="checkbox" data-entry="1905629006"></div>
+            <div class="task"><span>לוודא שהעברנו משימות למשמרת הבאה לפי הצורך</span><input type="checkbox" data-entry="1316837099"></div>
+        </div>
+        <button onclick="submitToGoogleForms()">תודה ולילה טוב</button>
+    </div>
 </body>
 </html>
