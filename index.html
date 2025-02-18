@@ -37,14 +37,15 @@
             cursor: pointer;
             border-radius: 5px;
         }
-        #status {
-            margin-top: 15px;
+        #datetime {
             font-size: 14px;
-            color: #333;
+            margin-bottom: 15px;
         }
     </style>
 </head>
-<body>
+<body onload="updateDateTime()">
+    <div id="datetime"></div>
+    
     <div class="container" id="step1">
         <h2>מי עובדת היום?</h2>
         <label for="worker">בחר/י שם:</label>
@@ -63,11 +64,18 @@
             <div class="task"><span>לטאטא / לשאוב לובי</span><input type="checkbox"></div>
             <div class="task"><span>לטאטא / לשאוב שירותים</span><input type="checkbox"></div>
             <div class="task"><span>לטאטא / לשאוב חדרי הלבשה</span><input type="checkbox"></div>
+            <div class="task"><span>לסדר כריות</span><input type="checkbox"></div>
             <div class="task"><span>מופ בסטודיו</span><input type="checkbox"></div>
             <div class="task"><span>לנקות מופ</span><input type="checkbox"></div>
+            <div class="task"><span>אם יש סמרטוטים בייבוש - להחזיר לתוך הקופסא בארון</span><input type="checkbox"></div>
             <div class="task"><span>למלא צץ רץ ידיים</span><input type="checkbox"></div>
             <div class="task"><span>למלא צץ רץ שירותים</span><input type="checkbox"></div>
             <div class="task"><span>לנקות אסלה</span><input type="checkbox"></div>
+            <div class="task"><span>להדליק שלט מואר (מעל המיקרו)</span><input type="checkbox"></div>
+            <div class="task"><span>לעבור על פינת טאץ' אפ</span><input type="checkbox"></div>
+            <div class="task"><span>לעבור על דלפק קבלה (למלא סוכריות אם צריך)</span><input type="checkbox"></div>
+            <div class="task"><span>לוודא שהפלאפון של הסטודיו בטעינה</span><input type="checkbox"></div>
+            <div class="task"><span>לעדכן לוח שחור לפי האפליקציה</span><input type="checkbox"></div>
         </div>
         <button onclick="nextStep(3)">הבא</button>
     </div>
@@ -75,11 +83,12 @@
     <div class="container" id="step3" style="display: none;">
         <h2>משימות בעבודה השוטפת</h2>
         <div class="task-list">
-            <div class="task"><span>לעבור על פולאואפ</span><input type="checkbox"></div>
+            <div class="task"><span>לבדוק אם יש משהו דחוף במייל</span><input type="checkbox"></div>
+            <div class="task"><span>לחזור למתעניינים (במייל)</span><input type="checkbox"></div>
+            <div class="task"><span>וואטסאפ</span><input type="checkbox"></div>
+            <div class="task"><span>אינסטגרם DM</span><input type="checkbox"></div>
             <div class="task"><span>3-4 הודעות D</span><input type="checkbox"></div>
-            <div class="task"><span>לענות על מיילים</span><input type="checkbox"></div>
-            <div class="task"><span>לענות על וואטסאפ</span><input type="checkbox"></div>
-            <div class="task"><span>לענות על DM באינסטגרם</span><input type="checkbox"></div>
+            <div class="task"><span>5 פולאואפים</span><input type="checkbox"></div>
         </div>
         <button onclick="nextStep(4)">סיימתי מה עוד?</button>
     </div>
@@ -87,40 +96,19 @@
     <div class="container" id="step4" style="display: none;">
         <h2>משימות לסגירה</h2>
         <div class="task-list">
-            <div class="task"><span>לרוקן פחים</span><input type="checkbox"></div>
-            <div class="task"><span>לסדר עמדת קבלה</span><input type="checkbox"></div>
-            <div class="task"><span>לסגור אחרינו דלת</span><input type="checkbox"></div>
+            <div class="task"><span>להרים לכלוך מלובי / חדר הלבשה / שירותים</span><input type="checkbox"></div>
+            <div class="task"><span>להעביר מטאטא / שואב זריז לפי הצורך</span><input type="checkbox"></div>
+            <div class="task"><span>להשאיר שולחן קבלה מסודר</span><input type="checkbox"></div>
             <div class="task"><span>לוודא שהעברנו משימות למשמרת הבאה לפי הצורך</span><input type="checkbox"></div>
+            <div class="task"><span>לוודא שהמורה יודע לנעול + שאין רקדנים למטה</span><input type="checkbox"></div>
         </div>
         <button onclick="submitToGoogleSheets()">תודה ולילה טוב</button>
     </div>
 
     <script>
-        function nextStep(step) {
-            document.getElementById("step" + (step - 1)).style.display = "none";
-            document.getElementById("step" + step).style.display = "block";
-        }
-
-        function submitToGoogleSheets() {
-            let worker = document.getElementById("worker").value;
-            let completedTasks = [];
-            document.querySelectorAll(".task-list .task input:checked").forEach(task => {
-                completedTasks.push(task.parentElement.querySelector("span").textContent);
-            });
-            
-            let formData = new FormData();
-            formData.append("worker", worker);
-            formData.append("tasks", completedTasks.join(", "));
-            
-            fetch("YOUR_GOOGLE_SHEETS_WEB_APP_URL", {
-                method: "POST",
-                body: formData
-            }).then(response => response.text()).then(data => {
-                alert("הנתונים נשמרו! תודה ולילה טוב!");
-                location.reload();
-            }).catch(error => {
-                alert("שגיאה בשמירה, נסה שוב.");
-            });
+        function updateDateTime() {
+            let now = new Date();
+            document.getElementById("datetime").textContent = now.toLocaleString("he-IL");
         }
     </script>
 </body>
