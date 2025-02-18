@@ -66,10 +66,8 @@
             <div class="task"><span>לטאטא / לשאוב שירותים</span><input type="checkbox"></div>
             <div class="task"><span>לטאטא / לשאוב חדרי הלבשה</span><input type="checkbox"></div>
             <div class="task"><span>לסדר כריות</span><input type="checkbox"></div>
-            <div class="task"><span>מופ בסטודיו</span><input type="checkbox"></div>
-            <div class="task"><span>לנקות מופ</span><input type="checkbox"></div>
-            <div class="task"><span>אם יש סמרטוטים בייבוש - להחזיר לתוך הקופסא בארון</span><input type="checkbox"></div>
             <div class="task"><span>למלא צץ רץ ידיים</span><input type="checkbox"></div>
+            <div class="task"><span>לעדכן לוח שחור</span><input type="checkbox"></div>
         </div>
         <button onclick="showStep(3)">הבא</button>
     </div>
@@ -81,8 +79,6 @@
             <div class="task"><span>לחזור למתעניינים (במייל)</span><input type="checkbox"></div>
             <div class="task"><span>וואטסאפ</span><input type="checkbox"></div>
             <div class="task"><span>אינסטגרם DM</span><input type="checkbox"></div>
-            <div class="task"><span>3-4 הודעות D</span><input type="checkbox"></div>
-            <div class="task"><span>5 פולאואפים</span><input type="checkbox"></div>
         </div>
         <button onclick="showStep(4)">סיימתי מה עוד?</button>
     </div>
@@ -90,10 +86,10 @@
     <div class="container" id="step4">
         <h2>משימות לסגירה</h2>
         <div class="task-list">
-            <div class="task"><span>להרים לכלוך מלובי / חדר הלבשה / שירותים</span><input type="checkbox"></div>
+            <div class="task"><span>להרים לכלוך מלובי</span><input type="checkbox"></div>
             <div class="task"><span>להשאיר שולחן קבלה מסודר</span><input type="checkbox"></div>
         </div>
-        <button onclick="submitToGoogleSheets()">תודה ולילה טוב</button>
+        <button onclick="submitToGoogleForms()">תודה ולילה טוב</button>
     </div>
 
     <script>
@@ -112,18 +108,20 @@
             document.getElementById("step" + step).style.display = "block";
         }
 
-        function submitToGoogleSheets() {
+        function submitToGoogleForms() {
             let worker = document.getElementById("worker").value;
             let completedTasks = [];
             document.querySelectorAll(".task-list .task input:checked").forEach(task => {
                 completedTasks.push(task.parentElement.querySelector("span").textContent);
             });
 
-            let formId = "1f6A1GbhMmhx5xJSdC6nNJB3rk4aZWAagH7XHC9JimCQ";
-            let entryWorker = "123456789";
-            let entryTasks = "987654321";
+            let formId = "1f6A1GbhMmhx5xJSdC6nNJB3rk4aZWAagH7XHC9JimCQ"; // מזהה הטופס שלך
+            let entryWorker = "123456789"; // מזהה ה-entry של שם העובדת
+            let entryTasks = "987654321"; // מזהה ה-entry של רשימת המשימות
 
-            let url = `https://docs.google.com/forms/d/e/${formId}/formResponse?entry.${entryWorker}=${encodeURIComponent(worker)}&entry.${entryTasks}=${encodeURIComponent(completedTasks.join(", " ))}`;
+            let url = `https://docs.google.com/forms/d/e/${formId}/formResponse?entry.${entryWorker}=${encodeURIComponent(worker)}&entry.${entryTasks}=${encodeURIComponent(completedTasks.join(", "))}`;
+
+            console.log("🔹 שולח נתונים ל-Google Forms:", url);
 
             fetch(url, {
                 method: "GET",
@@ -134,6 +132,7 @@
                 location.reload();
             })
             .catch(error => {
+                console.error("❌ שגיאה בשליחה:", error);
                 alert("שגיאה בשמירה, נסה שוב.");
             });
         }
