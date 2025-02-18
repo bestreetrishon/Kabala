@@ -110,6 +110,25 @@
             let now = new Date();
             document.getElementById("datetime").textContent = now.toLocaleString("he-IL");
         }
+
+        function submitToGoogleSheets() {
+            let worker = document.getElementById("worker").value;
+            let completedTasks = [];
+            document.querySelectorAll(".task-list .task input:checked").forEach(task => {
+                completedTasks.push(task.parentElement.querySelector("span").textContent);
+            });
+            
+            fetch("https://script.google.com/macros/s/AKfycbx4PgfajN2s4ldCvEKDvsGN7Q5SAnASxeaaYF6zuVEUppa7V-vPINam8jjyuxDhKe4g/exec", {
+                method: "POST",
+                body: JSON.stringify({ worker: worker, tasks: completedTasks }),
+                headers: { "Content-Type": "application/json" }
+            }).then(response => response.text()).then(data => {
+                alert("הנתונים נשמרו! תודה ולילה טוב!");
+                location.reload();
+            }).catch(error => {
+                alert("שגיאה בשמירה, נסה שוב.");
+            });
+        }
     </script>
 </body>
 </html>
