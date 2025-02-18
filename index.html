@@ -85,19 +85,6 @@
         <button onclick="showStep(3)">הבא</button>
     </div>
 
-    <div class="container" id="step3">
-        <h2>משימות בעבודה השוטפת</h2>
-        <div class="task-list">
-            <div class="task"><span>לבדוק אם יש משהו דחוף במייל</span><input type="checkbox" data-entry="28237386"></div>
-            <div class="task"><span>לחזור למיילים מתעניינות</span><input type="checkbox" data-entry="552017678"></div>
-            <div class="task"><span>וואטסאפ</span><input type="checkbox" data-entry="814698351"></div>
-            <div class="task"><span>אינסטגרם DM</span><input type="checkbox" data-entry="243151133"></div>
-            <div class="task"><span>3-4 הודעות D</span><input type="checkbox" data-entry="358947286"></div>
-            <div class="task"><span>5 פולאואפים</span><input type="checkbox" data-entry="1104884096"></div>
-        </div>
-        <button onclick="showStep(4)">סיימתי מה עוד?</button>
-    </div>
-
     <script>
         function updateDateTime() {
             let now = new Date().toLocaleString("he-IL");
@@ -115,7 +102,38 @@
         }
 
         function submitToGoogleForms() {
-            alert("נתונים נשלחו בהצלחה! תודה ולילה טוב.");
+            let worker = document.getElementById("worker").value;
+            let date = new Date().toLocaleString("he-IL");
+            let formId = "1FAIpQLSc8sckpEf_gleOsxIWOCJ4ErejOoOKe4u0a4-ENQDTiGvNc5g";
+            let entryWorker = "863306976";
+            let entryDate = "402146247";
+            
+            let entries = {};
+            document.querySelectorAll(".task-list .task input").forEach(task => {
+                let taskId = task.getAttribute("data-entry");
+                entries[taskId] = task.checked ? "✅" : "❌";
+            });
+            
+            let url = `https://docs.google.com/forms/d/e/${formId}/formResponse?entry.${entryWorker}=${encodeURIComponent(worker)}&entry.${entryDate}=${encodeURIComponent(date)}`;
+            
+            Object.keys(entries).forEach(entryId => {
+                url += `&entry.${entryId}=${encodeURIComponent(entries[entryId])}`;
+            });
+            
+            console.log("🔹 שולח נתונים ל-Google Forms:", url);
+            
+            fetch(url, {
+                method: "GET",
+                mode: "no-cors"
+            })
+            .then(() => {
+                alert("הנתונים נשמרו בהצלחה! תודה ולילה טוב!");
+                location.reload();
+            })
+            .catch(error => {
+                console.error("❌ שגיאה בשליחה:", error);
+                alert("שגיאה בשמירה, נסה שוב.");
+            });
         }
     </script>
 </body>
