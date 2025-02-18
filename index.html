@@ -98,19 +98,22 @@
         <button onclick="showStep(4)">סיימתי מה עוד?</button>
     </div>
 
-    <div class="container" id="step4">
-        <h2>משימות לסגירה</h2>
-        <div class="task-list">
-            <div class="task"><span>להרים לכלוך מלובי/הלבשה/שירותים</span><input type="checkbox" data-entry="1393964411"></div>
-            <div class="task"><span>להעביר מטאט / שואב אם צריך</span><input type="checkbox" data-entry="1316837099"></div>
-            <div class="task"><span>להשאיר שולחן קבלה מסודר</span><input type="checkbox" data-entry="554196869"></div>
-            <div class="task"><span>לוודא שהמורה יודע לנעול ולסגור דלת</span><input type="checkbox" data-entry="1905629006"></div>
-            <div class="task"><span>להחליף ולהוריד פחים</span><input type="checkbox" data-entry="1516200529"></div>
-        </div>
-        <button onclick="submitToGoogleForms()">תודה ולילה טוב</button>
-    </div>
-
     <script>
+        function updateDateTime() {
+            let now = new Date().toLocaleString("he-IL");
+            document.getElementById("datetime").textContent = now;
+        }
+
+        function showStep(step) {
+            document.querySelectorAll(".container").forEach(container => {
+                container.style.display = "none";
+            });
+            let nextStep = document.getElementById("step" + step);
+            if (nextStep) {
+                nextStep.style.display = "block";
+            }
+        }
+
         function submitToGoogleForms() {
             alert("נתונים נשלחו בהצלחה! תודה ולילה טוב.");
         }
