@@ -118,7 +118,7 @@
                 completedTasks.push(task.parentElement.querySelector("span").textContent);
             });
             
-            fetch("https://script.google.com/macros/s/AKfycbx4PgfajN2s4ldCvEKDvsGN7Q5SAnASxeaaYF6zuVEUppa7V-vPINam8jjyuxDhKe4g/exec", {
+            fetch("https://script.google.com/macros/s/AKfycbylwXGGxzjtKK1HYqPAEjpOX2bMvHJvbmA18LSWCtzZDNePANupUscYnmrdsx3Pt6N0/exec", {
                 method: "POST",
                 body: JSON.stringify({ worker: worker, tasks: completedTasks }),
                 headers: { "Content-Type": "application/json" }
