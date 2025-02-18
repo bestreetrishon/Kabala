@@ -65,18 +65,6 @@
             <div class="task"><span>לטאטא / לשאוב לובי</span><input type="checkbox"></div>
             <div class="task"><span>לטאטא / לשאוב שירותים</span><input type="checkbox"></div>
             <div class="task"><span>לטאטא / לשאוב חדרי הלבשה</span><input type="checkbox"></div>
-            <div class="task"><span>לסדר כריות</span><input type="checkbox"></div>
-            <div class="task"><span>מופ בסטודיו</span><input type="checkbox"></div>
-            <div class="task"><span>לנקות מופ</span><input type="checkbox"></div>
-            <div class="task"><span>אם יש סמרטוטים בייבוש - להחזיר לתוך הקופסא בארון</span><input type="checkbox"></div>
-            <div class="task"><span>למלא צץ רץ ידיים</span><input type="checkbox"></div>
-            <div class="task"><span>למלא צץ רץ שירותים</span><input type="checkbox"></div>
-            <div class="task"><span>לנקות אסלה</span><input type="checkbox"></div>
-            <div class="task"><span>להדליק שלט מואר (מעל המיקרו)</span><input type="checkbox"></div>
-            <div class="task"><span>לעבור על פינת טאץ' אפ</span><input type="checkbox"></div>
-            <div class="task"><span>לעבור על דלפק קבלה (למלא סוכריות אם צריך)</span><input type="checkbox"></div>
-            <div class="task"><span>לוודא שהפלאפון של הסטודיו בטעינה</span><input type="checkbox"></div>
-            <div class="task"><span>לעדכן לוח שחור לפי האפליקציה</span><input type="checkbox"></div>
         </div>
         <button onclick="showStep(3)">הבא</button>
     </div>
@@ -86,10 +74,6 @@
         <div class="task-list">
             <div class="task"><span>לבדוק אם יש משהו דחוף במייל</span><input type="checkbox"></div>
             <div class="task"><span>לחזור למתעניינים (במייל)</span><input type="checkbox"></div>
-            <div class="task"><span>וואטסאפ</span><input type="checkbox"></div>
-            <div class="task"><span>אינסטגרם DM</span><input type="checkbox"></div>
-            <div class="task"><span>3-4 הודעות D</span><input type="checkbox"></div>
-            <div class="task"><span>5 פולאואפים</span><input type="checkbox"></div>
         </div>
         <button onclick="showStep(4)">סיימתי מה עוד?</button>
     </div>
@@ -98,10 +82,7 @@
         <h2>משימות לסגירה</h2>
         <div class="task-list">
             <div class="task"><span>להרים לכלוך מלובי / חדר הלבשה / שירותים</span><input type="checkbox"></div>
-            <div class="task"><span>להעביר מטאטא / שואב זריז לפי הצורך</span><input type="checkbox"></div>
             <div class="task"><span>להשאיר שולחן קבלה מסודר</span><input type="checkbox"></div>
-            <div class="task"><span>לוודא שהעברנו משימות למשמרת הבאה לפי הצורך</span><input type="checkbox"></div>
-            <div class="task"><span>לוודא שהמורה יודע לנעול + שאין רקדנים למטה</span><input type="checkbox"></div>
         </div>
         <button onclick="submitToGoogleSheets()">תודה ולילה טוב</button>
     </div>
@@ -119,32 +100,31 @@
             document.getElementById("step" + step).style.display = "block";
         }
 
-      function submitToGoogleSheets() {
-    let worker = document.getElementById("worker").value;
-    let completedTasks = [];
-    document.querySelectorAll(".task-list .task input:checked").forEach(task => {
-        completedTasks.push(task.parentElement.querySelector("span").textContent);
-    });
+        function submitToGoogleSheets() {
+            let worker = document.getElementById("worker").value;
+            let completedTasks = [];
+            document.querySelectorAll(".task-list .task input:checked").forEach(task => {
+                completedTasks.push(task.parentElement.querySelector("span").textContent);
+            });
 
-    let formId = "1f6A1GbhMmhx5xJSdC6nNJB3rk4aZWAagH7XHC9JimCQ"; // מזהה הטופס שלך
-    let entryWorker = "123456789"; // מזהה ה-entry של שם העובדת
-    let entryTasks = "987654321"; // מזהה ה-entry של רשימת המשימות
+            let formId = "1f6A1GbhMmhx5xJSdC6nNJB3rk4aZWAagH7XHC9JimCQ"; // מזהה הטופס שלך
+            let entryWorker = "123456789"; // מזהה ה-entry של שם העובדת
+            let entryTasks = "987654321"; // מזהה ה-entry של רשימת המשימות
 
-    let url = `https://docs.google.com/forms/d/e/${formId}/formResponse?entry.${entryWorker}=${encodeURIComponent(worker)}&entry.${entryTasks}=${encodeURIComponent(completedTasks.join(", "))}`;
+            let url = `https://docs.google.com/forms/d/e/${formId}/formResponse?entry.${entryWorker}=${encodeURIComponent(worker)}&entry.${entryTasks}=${encodeURIComponent(completedTasks.join(", "))}`;
 
-    fetch(url, {
-        method: "GET",
-        mode: "no-cors"
-    })
-    .then(() => {
-        alert("הנתונים נשמרו בהצלחה! תודה ולילה טוב!");
-        location.reload();
-    })
-    .catch(error => {
-        alert("שגיאה בשמירה, נסה שוב.");
-    });
-}
-
+            fetch(url, {
+                method: "GET",
+                mode: "no-cors"
+            })
+            .then(() => {
+                alert("הנתונים נשמרו בהצלחה! תודה ולילה טוב!");
+                location.reload();
+            })
+            .catch(error => {
+                alert("שגיאה בשמירה, נסה שוב.");
+            });
+        }
     </script>
 </body>
 </html>
