@@ -62,43 +62,21 @@
     <div class="container" id="step2">
         <h2>משימות פתיחה</h2>
         <div class="task-list">
-            <div class="task"><span>לטאטא / לשאוב לובי</span><input type="checkbox"></div>
-            <div class="task"><span>לטאטא / לשאוב שירותים</span><input type="checkbox"></div>
-            <div class="task"><span>לטאטא / לשאוב חדרי הלבשה</span><input type="checkbox"></div>
-            <div class="task"><span>לסדר כריות</span><input type="checkbox"></div>
-            <div class="task"><span>למלא צץ רץ ידיים</span><input type="checkbox"></div>
-            <div class="task"><span>לעדכן לוח שחור</span><input type="checkbox"></div>
+            <div class="task"><span>לטאטא / לשאוב לובי</span><input type="checkbox" data-entry="1710609240"></div>
+            <div class="task"><span>לטאטא / לשאוב חדר הלבשה</span><input type="checkbox" data-entry="1558764855"></div>
+            <div class="task"><span>לטאטא / לשאוב שירותים</span><input type="checkbox" data-entry="1286509826"></div>
+            <div class="task"><span>מופ בסטודיו</span><input type="checkbox" data-entry="241464416"></div>
+            <div class="task"><span>לנקות מופ</span><input type="checkbox" data-entry="2111339046"></div>
+            <div class="task"><span>לעבור עם מגבון על אסלה</span><input type="checkbox" data-entry="2117044128"></div>
+            <div class="task"><span>לעבור עם מגבון על כיור</span><input type="checkbox" data-entry="707189374"></div>
         </div>
         <button onclick="showStep(3)">הבא</button>
     </div>
 
-    <div class="container" id="step3">
-        <h2>משימות בעבודה השוטפת</h2>
-        <div class="task-list">
-            <div class="task"><span>לבדוק אם יש משהו דחוף במייל</span><input type="checkbox"></div>
-            <div class="task"><span>לחזור למתעניינים (במייל)</span><input type="checkbox"></div>
-            <div class="task"><span>וואטסאפ</span><input type="checkbox"></div>
-            <div class="task"><span>אינסטגרם DM</span><input type="checkbox"></div>
-        </div>
-        <button onclick="showStep(4)">סיימתי מה עוד?</button>
-    </div>
-
-    <div class="container" id="step4">
-        <h2>משימות לסגירה</h2>
-        <div class="task-list">
-            <div class="task"><span>להרים לכלוך מלובי</span><input type="checkbox"></div>
-            <div class="task"><span>להשאיר שולחן קבלה מסודר</span><input type="checkbox"></div>
-        </div>
-        <button onclick="submitToGoogleForms()">תודה ולילה טוב</button>
-    </div>
-
     <script>
         function updateDateTime() {
-            let now = new Date();
-            let dateTimeElement = document.getElementById("datetime");
-            if (dateTimeElement) {
-                dateTimeElement.textContent = now.toLocaleString("he-IL");
-            }
+            let now = new Date().toLocaleString("he-IL");
+            document.getElementById("datetime").textContent = now;
         }
 
         function showStep(step) {
@@ -110,19 +88,25 @@
 
         function submitToGoogleForms() {
             let worker = document.getElementById("worker").value;
-            let completedTasks = [];
-            document.querySelectorAll(".task-list .task input:checked").forEach(task => {
-                completedTasks.push(task.parentElement.querySelector("span").textContent);
+            let date = new Date().toLocaleString("he-IL");
+            let formId = "1FAIpQLSc8sckpEf_gleOsxIWOCJ4ErejOoOKe4u0a4-ENQDTiGvNc5g";
+            let entryWorker = "863306976";
+            let entryDate = "402146247";
+            
+            let entries = {};
+            document.querySelectorAll(".task-list .task input").forEach(task => {
+                let taskId = task.getAttribute("data-entry");
+                entries[taskId] = task.checked ? "✅" : "❌";
             });
-
-            let formId = "1FAIpQLSc8sckpEf_gleOsxIWOCJ4ErejOoOKe4u0a4-ENQDTiGvNc5g"; // מזהה הטופס שלך
-            let entryWorker = "863306976"; // מזהה ה-entry של שם העובדת
-            let entryTasks = "402146247"; // מזהה ה-entry של רשימת המשימות
-
-            let url = `https://docs.google.com/forms/d/e/${formId}/formResponse?entry.${entryWorker}=${encodeURIComponent(worker)}&entry.${entryTasks}=${encodeURIComponent(completedTasks.join(", "))}`;
-
+            
+            let url = `https://docs.google.com/forms/d/e/${formId}/formResponse?entry.${entryWorker}=${encodeURIComponent(worker)}&entry.${entryDate}=${encodeURIComponent(date)}`;
+            
+            Object.keys(entries).forEach(entryId => {
+                url += `&entry.${entryId}=${encodeURIComponent(entries[entryId])}`;
+            });
+            
             console.log("🔹 שולח נתונים ל-Google Forms:", url);
-
+            
             fetch(url, {
                 method: "GET",
                 mode: "no-cors"
