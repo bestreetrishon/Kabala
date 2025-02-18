@@ -89,7 +89,10 @@
     <script>
         function updateDateTime() {
             let now = new Date();
-            document.getElementById("datetime").textContent = now.toLocaleString("he-IL");
+            let dateTimeElement = document.getElementById("datetime");
+            if (dateTimeElement) {
+                dateTimeElement.textContent = now.toLocaleString("he-IL");
+            }
         }
 
         function showStep(step) {
